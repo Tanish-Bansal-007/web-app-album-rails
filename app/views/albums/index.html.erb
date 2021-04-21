@@ -1,0 +1,31 @@
+<div class="container text-secondary">
+    <h2> <strong>Welcome, <%= current_user.email if user_signed_in? %></strong> </h2>
+    <br>
+    <h3 class="d-flex justify-content-between"> Your Albums 
+    <%= link_to 'Create an Album' , new_album_path , class: 'btn btn-secondary'%>
+    </h3>
+    <br>
+    <table class="table text-center text-secondary">
+        <tr>
+            <th>TITLE</th>
+            <th>DESCRIPTION</th> 
+            <th>ACTION</th>
+        </tr>
+        
+            <% @albums.each do  |album| %>
+                <tr>
+                    <td style="width:25%">
+                        <%= album.title%> 
+                    </td>   
+                    <td style="width:30%">
+                        <%= album.desciption%> 
+                    </td> 
+                    <td style="width:45%">
+                        <%= link_to 'Show More', album, class: 'btn btn-info' %>
+                        <%= link_to 'Edit', edit_album_path(album) , class: 'btn btn-warning ml-3'%>
+                        <%= link_to 'Delete', album_path(album), method: :delete, data: { confirm: "Are You Sure ?"}, class: 'btn btn-danger ml-3' %>
+                    </td>
+                </tr>
+            <%end%>
+    </table>
+</div>

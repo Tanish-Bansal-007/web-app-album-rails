@@ -1,0 +1,100 @@
+<div class="container text-secondary">
+    <h2 class="text-info"> &nbspAlbum :</h2>
+    <br>
+    <div class= "border rounded p-3">
+        <h2 class="text-center"><u><%= @album.title %></u></h2>
+        <br><br>
+        <h5> <strong>Description :&nbsp</strong><%= @album.desciption %> </h5>
+        <br>
+        <h5> <strong>Images : </strong></h5>
+        <br>
+        <div class="d-flex flex-row flex-wrap justify-content-between">
+            <% @album.images.each do |image| %>
+                <div class="card mb-5" style="width: 30%">
+                    <%= image_tag(image, class:"card-img-top", style:"width: 100% ;height:60% ")%>
+                    <div class="card-body ">
+                        <h5 class="card-title">Tags below:</h5>
+                        <p class="card-text"></p>
+                        <div class="d-flex flex-row justify-content-between mt-5">
+                            <button type="button" checkid="<%=image.blob_id%>" class="btn btn-info open-modal tagitem" data-toggle="modal"  data-target="#exampleModal">Add Tags</button>
+                            <%= link_to 'Remove' ,  delete_image_attachment_album_path(image) , method: :delete, data: { confirm: "Are You Sure ?" }, class:"btn btn-danger"%> 
+                        </div>  
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+    <br>
+    <br>
+    <h2 class="text-info"> Comments :</h2>
+    <br>
+        <%= render @album.comments %>
+    <br><br>
+    <h2 class="text-info"> Add a Comment : </h2>
+    <br>
+    <%= render 'comments/form'%>
+</div>  
+
+<!-- Modal -->
+<%= form_for(@tag, url: album_tags_path(@album)) do |form|%>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">  
+          <h5 class="modal-title" id="exampleModalLabel">Enter Tags for your Image here</h5>
+          
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id= "modal-body">
+          <div id="tags">
+             <%= form.text_field :tag_name, class: "form-control py-4 px-3 inout", placeholder: "Add Tag",multiple: true%>
+          </div>
+        </div>
+        <input type="hidden" name="image" value="" id="mytaghidinput">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <%= form.submit class:"btn btn-info"%>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+      $(".tagitem").click(function(){
+        var imageid = $(this).attr("checkid");
+        $("#exampleModal").modal('show');
+        $("#mytaghidinput").val(imageid);
+      });
+    });
+</script> 
+<script>
+  $(function(){ // DOM ready
+
+    // ::: TAGS BOX
+
+    $(".inout").on({
+      focusout : function() {
+        var txt = this.value.replace(/[^a-z0-9\+\-\.\#]/ig,''); // allowed characters
+        if(txt) $("<span/>", {text:txt.toLowerCase(), insertBefore:this});
+        this.value = "";
+      },
+      keyup : function(ev) {
+        // if: comma|enter (delimit more keyCodes with | pipe)
+        if(/(188)/.test(ev.which)) $(this).focusout(); 
+      }
+    });
+    $('#tags').on('click', 'span', function() {
+      if(confirm("Remove "+ $(this).text() +"?")) $(this).remove(); 
+    });
+
+  });
+</script>
+<%= javascript_pack_tag 'my_js' %>
+
+

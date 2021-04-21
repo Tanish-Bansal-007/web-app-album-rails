@@ -1,0 +1,15 @@
+<div class="border rounded p-3 bg-light">
+    <p>
+        <strong> Commenter :&nbsp</strong>
+        <%= comment.commenter %>
+    </p>
+    <div class="d-flex flex-row justify-content-between">
+        <div class="d-flex align-items-center">
+            <strong> Comment :&nbsp</strong>
+            <%= comment.body%>
+        </div>
+        <div>
+            <%= link_to 'Delete Comment', [comment.album, comment], method: :delete, data: { confirm: "Are You Sure?" }, class:"btn btn-danger" %>
+        </div>
+    </div>
+</div>
