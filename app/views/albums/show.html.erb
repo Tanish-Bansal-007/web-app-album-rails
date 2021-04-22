@@ -1,5 +1,8 @@
 <div class="container text-secondary">
-    <h2 class="text-info"> &nbspAlbum :</h2>
+    <div class="d-flex justify-content-between">
+        <h2 class="text-info"> &nbspAlbum :</h2>
+        <%= link_to 'Edit Album', edit_album_path(@album) , class: 'd-flex btn btn-outline-warning ml-3 align-items-center'%>
+    </div>
     <br>
     <div class= "border rounded p-3">
         <h2 class="text-center"><u><%= @album.title %></u></h2>
@@ -10,15 +13,15 @@
         <br>
         <div class="d-flex flex-row flex-wrap justify-content-between">
             <% @album.images.each do |image| %>
-                <div class="card mb-5" style="width: 30%">
+                <div class="card mb-5 shadow mb-5 bg-white rounded" style="width: 30%">
                     <%= image_tag(image, class:"card-img-top", style:"width: 100% ; height: 40vh ")%>
                     <div class="card-body ">
-                        <h5 class="card-title">Tags below:</h5>
-                        <p class="card-text"></p>
+                        <h5 class="card-title">Tags below&nbsp: </h5>
+                        <p class="card-text shadow p-3 mb-4 bg-white rounded"> <%= Tag.where(image_id: image.id).map(&:tag_name).join(" , ") %></p>
                         <br><br>
                         <div class="d-flex flex-row justify-content-between ">
                             <button type="button" checkid="<%=image.blob_id%>" class="btn btn-info open-modal tagitem" data-toggle="modal"  data-target="#exampleModal">Add Tags</button>
-                            <%= link_to 'Remove' ,  delete_image_attachment_album_path(image) , method: :delete, data: { confirm: "Are You Sure ?" }, class:"btn btn-danger"%> 
+                            <%= link_to 'Delete Image' ,  delete_image_attachment_album_path(image) , method: :delete, data: { confirm: "Are You Sure ?" }, class:"btn btn-danger"%> 
                         </div>  
                     </div>
                     <br>
@@ -49,10 +52,8 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" id= "modal-body">
-          <div id="tags">
-             <%= form.text_field :tag_name, class: "form-control py-4 px-3 inout", placeholder: "Add Tag",multiple: true%>
-          </div>
+        <div class="modal-body" id= "modal-body"> 
+           <%= form.text_field :tag_name, class: "form-control", "data-role" => "tagsinput" %> 
         </div>
         <input type="hidden" name="image" value="" id="mytaghidinput">
         <div class="modal-footer">
@@ -75,7 +76,7 @@
       });
     });
 </script> 
-<script>
+<%# <script>
   $(function(){ // DOM ready
 
     // ::: TAGS BOX
@@ -96,7 +97,7 @@
     });
 
   });
-</script>
-<%= javascript_pack_tag 'my_js' %>
+</script> %>
+<%# javascript_pack_tag 'my_js' %>
 
 
