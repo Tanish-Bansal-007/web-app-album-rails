@@ -18,8 +18,9 @@
     <br>
     <div>
         <%= form.label :images %><br>
-        <%= form.file_field :images, multiple: true%>
+        <%= form.file_field :images, multiple: true, class:"filefield"%>
     </div>
+    <br>
     <div>
         <%= form.submit class:"btn btn-info"%>
         <%= link_to 'Back',albums_path, class:"btn btn-secondary ml-3"%>

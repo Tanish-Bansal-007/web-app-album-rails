@@ -68,3 +68,7 @@
 	padding: 7px;
 	width: auto;
 }
+.filefield {
+	background-color: darkgray;
+	color: black;
+}
