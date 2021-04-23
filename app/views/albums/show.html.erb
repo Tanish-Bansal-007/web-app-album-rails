@@ -19,8 +19,12 @@
                         <h5 class="card-title">Tags below&nbsp: </h5>
                         <p class="card-text shadow p-3 mb-4 bg-white rounded"> <%= Tag.where(image_id: image.id).map(&:tag_name).join(" , ") %></p>
                         <br><br>
+                        <% tagssss = Tag.where(image_id: image.id).map{|x| {id:x.id,tag_name:x.tag_name}} %>
+                        <%# <% tagssss.each do |tag| %> 
+                            <%# <div class="previous-tags d-inline-flex px-2 py-1 mb-2"><%= tag[:tag_name] </div>%>
+                        <%# <% end %>  
                         <div class="d-flex flex-row justify-content-between ">
-                            <button type="button" checkid="<%=image.blob_id%>" class="btn btn-info open-modal tagitem" data-toggle="modal"  data-target="#exampleModal">Add Tags</button>
+                            <button type="button" data-tags="<%= tagssss.map{|x| x[:tag_name]}  %>" checkid="<%=image.blob_id%>" class="btn btn-info open-modal tagitem" data-toggle="modal"  data-target="#exampleModal">Add Tags</button>
                             <%= link_to 'Delete Image' ,  delete_image_attachment_album_path(image) , method: :delete, data: { confirm: "Are You Sure ?" }, class:"btn btn-danger"%> 
                         </div>  
                     </div>
@@ -52,7 +56,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" id= "modal-body"> 
+        <div class="modal-body" id= "modal-body">
            <%= form.text_field :tag_name, class: "form-control", "data-role" => "tagsinput" %> 
         </div>
         <input type="hidden" name="image" value="" id="mytaghidinput">
@@ -70,6 +74,8 @@
 <script type="text/javascript">
     $(document).ready(function(){
       $(".tagitem").click(function(){
+        var pretag = $(this).attr("data-tags");
+        var ptag = jQuery.parseJSON(pretag);
         var imageid = $(this).attr("checkid");
         $("#exampleModal").modal('show');
         $("#mytaghidinput").val(imageid);
